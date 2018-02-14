@@ -22,4 +22,5 @@
     ?>
   </div>
 <?php endif; ?>
+<?php print $metadata; ?>
 <!-- @todo Add table of metadata values -->

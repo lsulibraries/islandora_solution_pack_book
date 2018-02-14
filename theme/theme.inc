@@ -72,11 +72,13 @@ function template_process_islandora_book_book(array &$variables) {
  */
 function template_preprocess_islandora_book_page(array &$variables) {
   module_load_include('inc', 'islandora', 'includes/solution_packs');
+  module_load_include('inc', 'islandora', 'includes/metadata');
+  
   $object = $variables['object'];
   $results = $object->relationships->get(FEDORA_RELS_EXT_URI, 'isMemberOf');
   $result = reset($results);
   $variables['book_object_id'] = $result ? $result['object']['value'] : FALSE;
-
+  $variables['metadata'] = islandora_retrieve_metadata_markup($object);
   $params = array();
   if (isset($object['JP2']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['JP2'])) {
     // Get token to allow access to XACML protected datastreams.
@@ -87,10 +89,6 @@ function template_preprocess_islandora_book_page(array &$variables) {
       'absolute' => TRUE,
       'query' => array('token' => $token),
     ));
-    $params['token'] = $token;
-    $params['pid'] = $object->id;
-    $params['dsid'] = 'JP2';
-    // Can be removed after 7.x-1.11 is out the door islandora_deprecated.
     $params['jp2_url'] = $jp2_url;
   }
 
