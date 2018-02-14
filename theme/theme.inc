@@ -35,6 +35,12 @@ function template_preprocess_islandora_book_book(array &$variables) {
   $variables['parent_collections'] = islandora_get_parents_from_rels_ext($object);
   $variables['metadata'] = islandora_retrieve_metadata_markup($object);
   $variables['description'] = islandora_retrieve_description_markup($object);
+  if (isset($object['PDF']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['PDF'])) {
+    $sanitized_label = preg_replace('/[^A-Za-z0-9_\-]|\.pdf$/', '_', $object->label);
+    $download_url = 'islandora/object/' . $object->id . '/datastream/PDF/download/' . $sanitized_label . '.pdf';
+    $download_text = t("Download pdf");
+    $variables['pdf_download_link'] = l($download_text, $download_url, array('attributes' => array('class' => array('islandora-book-pdf-link'))));
+  }
 }
 
 /**
@@ -60,7 +66,6 @@ function template_process_islandora_book_book(array &$variables) {
     }
   }
 }
-
 /**
  * Prepares variables for islandora_book_page templates.
  *

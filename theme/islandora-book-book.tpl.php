@@ -9,6 +9,11 @@
     <?php print $viewer; ?>
   </div>
 <?php endif; ?>
+<?php if (isset($pdf_download_link)): ?>
+  <div id="book-pdf-download-lidk">
+  <?php print $pdf_download_link; ?>
+  </div>
+<?php endif; ?>
 
 <?php if($display_metadata === 1): ?>
   <div class="islandora-book-metadata">
